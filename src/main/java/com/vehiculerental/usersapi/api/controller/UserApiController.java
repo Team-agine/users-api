@@ -6,6 +6,9 @@ import com.vehiculerental.usersapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +36,18 @@ public class UserApiController {
         Date date = new Date();
         user.setCreatedAt(date);
         return userRepository.save(user);
+    }
+
+    @PostMapping("/users/age")
+    public int getAge(@RequestBody String id){
+        Optional<User> user = this.findById(id);
+        Date dateBorn = user.get().getBirthDate();
+        LocalDate birthDate = dateBorn.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate now = LocalDate.now(); //gets localDate
+        Period diff = Period.between(birthDate, now); //difference between the dates is calculated
+       return diff.getYears();
     }
 
     @PutMapping("/users/{id}")
