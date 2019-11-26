@@ -1,10 +1,12 @@
 package com.vehiculerental.usersapi.api.controller;
 
+import com.vehiculerental.usersapi.hashComponent.ComponentSHA1;
 import com.vehiculerental.usersapi.model.User;
 import com.vehiculerental.usersapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,30 +28,35 @@ public class UserApiController {
 
     @PostMapping("/users")
     public User save(@RequestBody User user) {
+        String shaPassword = ComponentSHA1.getSha1(user.getPassword());
+        user.setPassword(shaPassword);
+        Date date = new Date();
+        user.setCreatedAt(date);
         return userRepository.save(user);
     }
 
     @PutMapping("/users/{id}")
-    public User update(@PathVariable String id, User user) {
+    public User update(@PathVariable String id, @RequestBody User user) {
         Optional<User> currentUser = this.findById(id);
         if (currentUser.isPresent()) {
 
-            if (user.getFirstname() != null) {
-                currentUser.get().setFirstname(user.getFirstname());
+            if (user.getFirstName() != null) {
+                currentUser.get().setFirstName(user.getFirstName());
             }
-            if (user.getLastname() != null) {
-                currentUser.get().setLastname(user.getLastname());
+            if (user.getLastName() != null) {
+                currentUser.get().setLastName(user.getLastName());
             }
-            if (user.getBirthdate() != null) {
-                currentUser.get().setBirthdate(user.getBirthdate());
+            if (user.getBirthDate() != null) {
+                currentUser.get().setBirthDate(user.getBirthDate());
             }
-            if (user.getLicensedate() != null) {
-                currentUser.get().setLicensedate(user.getLicensedate());
+            if (user.getLicenseDate() != null) {
+                currentUser.get().setLicenseDate(user.getLicenseDate());
             }
-            if (user.getLicensenumber() != null) {
-                currentUser.get().setLicensenumber(user.getLicensenumber());
+            if (user.getLicenseNumber() != null) {
+                currentUser.get().setLicenseNumber(user.getLicenseNumber());
             }
-
+            Date date = new Date();
+            currentUser.get().setUpdatedAt(date);
             return userRepository.save(currentUser.get());
         }
         return null;
@@ -59,6 +66,7 @@ public class UserApiController {
     public void deleteById(@PathVariable String id) {
         userRepository.deleteById(id);
     }
+
 
 
 }

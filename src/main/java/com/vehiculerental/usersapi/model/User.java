@@ -13,34 +13,58 @@ public class User {
 
     @Id
     private String id;
-    @Column(name = "firstname", length = 64)
-    private String firstname;
-    @Column(name = "lastname", length = 64)
-    private String lastname;
-    @Column(name = "birthdate")
-    private Date birthdate;
-    @Column(name = "licensedate")
-    private Date licensedate;
-    @Column(name = "licensenumber", length = 64)
-    private String licensenumber;
+    @Column(name = "first_name", length = 64)
+    private String firstName;
+    @Column(name = "last_name", length = 64)
+    private String lastName;
+    @Column(name = "birth_date")
+    private Date birthDate;
+    @Column(name = "license_date")
+    private Date licenseDate;
+    @Column(name = "license_number", length = 64)
+    private String licenseNumber;
     @Column(name = "email", length = 255)
     private String email;
     @Column(name = "password")
     private String password;
+    @Column(name= "created_at")
+    private Date createdAt;
+    @Column(name="updated_at")
+    private Date updatedAt;
 
     public User(){
 
     }
+    Date date = new Date();
 
-    public User(String firstname, String lastname, Date birthdate, Date licensedate, String licensenumber, String email, String password) {
+    public User(String firstName, String lastName, Date birthDate, Date licenseDate, String licenseNumber, String email, String password, Date createdAt, Date updatedAt, Date date) {
         this.id = UUID.randomUUID().toString();
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.birthdate = birthdate;
-        this.licensedate = licensedate;
-        this.licensenumber = licensenumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.licenseDate = licenseDate;
+        this.licenseNumber = licenseNumber;
         this.email = email;
         this.password = password;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.date = date;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public String getId() {
@@ -51,44 +75,44 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public Date getBirthdate() {
-        return birthdate;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public Date getLicensedate() {
-        return licensedate;
+    public Date getLicenseDate() {
+        return licenseDate;
     }
 
-    public void setLicensedate(Date licensedate) {
-        this.licensedate = licensedate;
+    public void setLicenseDate(Date licenseDate) {
+        this.licenseDate = licenseDate;
     }
 
-    public String getLicensenumber() {
-        return licensenumber;
+    public String getLicenseNumber() {
+        return licenseNumber;
     }
 
-    public void setLicensenumber(String licensenumber) {
-        this.licensenumber = licensenumber;
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
     }
 
     public String getEmail() {
@@ -111,11 +135,11 @@ public class User {
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", birthdate='" + birthdate + '\'' +
-                ", licensedate='" + licensedate + '\'' +
-                ", licensenumber='" + licensenumber + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", licenseDate='" + licenseDate + '\'' +
+                ", licenseNumber='" + licenseNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 '}';
