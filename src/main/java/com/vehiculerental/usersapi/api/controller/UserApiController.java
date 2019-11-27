@@ -4,6 +4,7 @@ import com.vehiculerental.usersapi.hashComponent.ComponentSHA1;
 import com.vehiculerental.usersapi.model.User;
 import com.vehiculerental.usersapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Validated
 public class UserApiController {
 
     @Autowired
@@ -35,19 +37,17 @@ public class UserApiController {
         user.setPassword(shaPassword);
         Date date = new Date();
         user.setCreatedAt(date);
-        return userRepository.save(user);
+        if (diffAge(user, user.getBirthDate()) > 18){
+            return userRepository.save(user);
+        }
+        return null;
     }
 
     @PostMapping("/users/age")
     public int getAge(@RequestBody String id){
         Optional<User> user = this.findById(id);
         Date dateBorn = user.get().getBirthDate();
-        LocalDate birthDate = dateBorn.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-        LocalDate now = LocalDate.now(); //gets localDate
-        Period diff = Period.between(birthDate, now); //difference between the dates is calculated
-       return diff.getYears();
+        return diffAge(user.get(), dateBorn);
     }
 
     @PutMapping("/users/{id}")
@@ -82,6 +82,13 @@ public class UserApiController {
         userRepository.deleteById(id);
     }
 
-
+    private int diffAge(User user, Date dateBorn){
+        LocalDate birthDate = dateBorn.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate now = LocalDate.now(); //gets localDate
+        Period diff = Period.between(birthDate, now); //difference between the dates is calculated
+        return diff.getYears();
+    }
 
 }
