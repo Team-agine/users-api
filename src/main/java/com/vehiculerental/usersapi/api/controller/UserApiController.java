@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RestController
 @Validated
@@ -33,21 +37,22 @@ public class UserApiController {
 
     @PostMapping("/users")
     public User save(@RequestBody User user) {
+        user.setId(UUID.randomUUID().toString());
         String shaPassword = ComponentSHA1.getSha1(user.getPassword());
         user.setPassword(shaPassword);
         Date date = new Date();
         user.setCreatedAt(date);
-        if (diffAge(user, user.getBirthDate()) > 18){
+        if (diffAge(user, user.getBirthDate()) >= 18) {
             return userRepository.save(user);
         }
         return null;
     }
 
     @PostMapping("/users/age")
-    public int getAge(@RequestBody String id){
+    public int getAge(@RequestBody String id) {
         Optional<User> user = this.findById(id);
         Date dateBorn = user.get().getBirthDate();
-        return diffAge(user.get(), dateBorn);
+         return diffAge(user.get(), dateBorn);
     }
 
     @PutMapping("/users/{id}")
@@ -82,7 +87,7 @@ public class UserApiController {
         userRepository.deleteById(id);
     }
 
-    private int diffAge(User user, Date dateBorn){
+    private int diffAge(User user, Date dateBorn) {
         LocalDate birthDate = dateBorn.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
@@ -90,5 +95,4 @@ public class UserApiController {
         Period diff = Period.between(birthDate, now); //difference between the dates is calculated
         return diff.getYears();
     }
-
 }

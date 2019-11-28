@@ -37,8 +37,8 @@ public class User {
     }
     Date date = new Date();
 
-    public User(String firstName, String lastName, Date birthDate, Date licenseDate, String licenseNumber, String email, String password, Date createdAt, Date updatedAt, Date date) {
-        this.id = UUID.randomUUID().toString();
+    public User(String id, String firstName, String lastName, Date birthDate, Date licenseDate, String licenseNumber, String email, String password, Date createdAt, Date updatedAt, Date date) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
